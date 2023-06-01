@@ -12,10 +12,15 @@ func RegisterRoutes(r *gin.Engine, cfg *config.Config) *ServiceAuth {
 	}
 	route := r.Group("/auth")
 	route.POST("/register", svc.Register)
+	route.POST("/login", svc.Login)
 	return svc
 
 }
 
 func (svc *ServiceAuth) Register(ctx *gin.Context) {
 	routes.Register(ctx, svc.client)
+}
+
+func (svc *ServiceAuth) Login(ctx *gin.Context) {
+	routes.Login(ctx, svc.client)
 }

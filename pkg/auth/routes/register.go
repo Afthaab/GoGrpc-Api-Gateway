@@ -17,7 +17,8 @@ func Register(ctx *gin.Context, p pb.AuthServiceClient) {
 		ctx.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
-	res, err := p.Regitser(context.Background(), &pb.RegisterRequest{
+
+	res, err := p.Register(context.Background(), &pb.RegisterRequest{
 		Username: body.Username,
 		Email:    body.Email,
 		Password: body.Password,
