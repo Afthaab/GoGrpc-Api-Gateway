@@ -1,8 +1,6 @@
 package auth
 
 import (
-	"net/http"
-
 	"github.com/apiGateway/pkg/auth/routes"
 	"github.com/apiGateway/pkg/config"
 	"github.com/gin-gonic/gin"
@@ -12,15 +10,15 @@ func RegisterRoutes(r *gin.Engine, cfg *config.Config) *ServiceAuth {
 	svc := &ServiceAuth{
 		client: InitServiceClient(cfg),
 	}
-	auth := InitAuthMiddleware(svc)
+	// auth := InitAuthMiddleware(svc)
 	route := r.Group("/auth")
 	route.POST("/register", svc.Register)
 	route.POST("/login", svc.Login)
-	route.GET("/home", auth.AuthRequired, func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{
-			"Message": "Success",
-		})
-	})
+	// route.GET("/home", auth.AuthRequired, func(ctx *gin.Context) {
+	// 	ctx.JSON(http.StatusOK, gin.H{
+	// 		"Message": "Success",
+	// 	})
+	// })
 	return svc
 
 }

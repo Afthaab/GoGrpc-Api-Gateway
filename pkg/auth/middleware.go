@@ -2,8 +2,8 @@ package auth
 
 import (
 	"context"
-	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/apiGateway/pkg/auth/pb"
@@ -41,6 +41,9 @@ func (c *AuthMiddlewareConfig) AuthRequired(ctx *gin.Context) {
 		})
 	}
 
-	ctx.Writer.Header().Set("userId", fmt.Sprint(res.Userid))
+	str := strconv.FormatInt(res.Userid, 10)
+	ctx.Set("userId", str)
+
+	// ctx.Writer.Header().Set("userId", str)
 	ctx.Next()
 }
