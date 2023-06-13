@@ -14,7 +14,9 @@ func Register(ctx *gin.Context, p pb.AuthServiceClient) {
 	body := domain.User{}
 
 	if err := ctx.Bind(&body); err != nil {
-		ctx.AbortWithError(http.StatusBadRequest, err)
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"Error": "Error in Binding the JSON Data",
+		})
 		return
 	}
 
@@ -35,5 +37,30 @@ func Register(ctx *gin.Context, p pb.AuthServiceClient) {
 	ctx.Writer.WriteHeader(http.StatusBadRequest)
 	utils.ResponseJSON(*ctx, responses)
 	return
+
+}
+
+func RegisterValidate(ctx *gin.Context, p pb.AuthServiceClient) {
+	body := domain.User{}
+	if err := ctx.Bind(&body); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"Error": "Error in Binding the JSON Data",
+		})
+		return
+	}
+	res, err := p.RegisterValidate(context.Background(), &pb.RegisterValidateRequest{
+		Otp: body.Otp,
+	})
+	errs, _ := utils.ExtractError(err)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{
+			"Error": errs,
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{
+		"Message": "Successfully created the user",
+		"body":    res,
+	})
 
 }

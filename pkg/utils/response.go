@@ -2,9 +2,11 @@ package utils
 
 import (
 	"encoding/json"
+	"errors"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"google.golang.org/grpc/status"
 )
 
 //In Go, the strings.Split() function is used to split a string into substrings based on a specified delimiter. It returns a slice of substrings.
@@ -41,4 +43,17 @@ func ResponseJSON(c gin.Context, data interface{}) {
 
 	c.Writer.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(c.Writer).Encode(data)
+}
+
+func ExtractError(err error) (string, error) {
+
+	// Check if the error is a gRPC error
+	if errStatus, ok := status.FromError(err); ok {
+		// Extract the error message from the gRPC error
+		errorMessage := errStatus.Message()
+		return errorMessage, nil
+	} else {
+		// Handle non-gRPC errors here
+		return "", errors.New("Not a grpc error")
+	}
 }
