@@ -3,6 +3,8 @@ package utils
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
+	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -44,9 +46,7 @@ func ResponseJSON(c gin.Context, data interface{}) {
 	c.Writer.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(c.Writer).Encode(data)
 }
-
 func ExtractError(err error) (string, error) {
-
 	// Check if the error is a gRPC error
 	if errStatus, ok := status.FromError(err); ok {
 		// Extract the error message from the gRPC error
@@ -56,4 +56,13 @@ func ExtractError(err error) (string, error) {
 		// Handle non-gRPC errors here
 		return "", errors.New("Not a grpc error")
 	}
+}
+
+func JsonInputValidation(ctx *gin.Context) {
+	fmt.Println("---------------------------------------------------------")
+	ctx.JSON(http.StatusBadRequest, gin.H{
+		"Success": false,
+		"Message": "client-side input validation failed",
+		"Error":   "Error in Binding the JSON Data",
+	})
 }

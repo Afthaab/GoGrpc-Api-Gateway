@@ -43,7 +43,5 @@ func (c *AuthMiddlewareConfig) AuthRequired(ctx *gin.Context) {
 
 	str := strconv.FormatInt(res.Userid, 10)
 	ctx.Set("userId", str)
-
-	// ctx.Writer.Header().Set("userId", str)
 	ctx.Next()
 }

@@ -1,8 +1,8 @@
 package domain
 
 type User struct {
-	Username string `json:"username" `
-	Password string `json:"password"`
-	Email    string `json:"email"`
+	Username string `json:"username"  `
+	Password string `json:"password" `
+	Email    string `json:"email" `
 	Otp      string `json:"Otp"`
 }

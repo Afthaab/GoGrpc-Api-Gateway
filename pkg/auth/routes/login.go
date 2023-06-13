@@ -14,27 +14,29 @@ func Login(ctx *gin.Context, c pb.AuthServiceClient) {
 	user := domain.User{}
 	err := ctx.Bind(&user)
 	if err != nil {
-		responses := utils.ErrorResponse("Please give essential data", err.Error(), nil)
-		ctx.Writer.Header().Set("Content-Type", "application/json")
-		ctx.Writer.WriteHeader(http.StatusBadRequest)
-		utils.ResponseJSON(*ctx, responses)
+		utils.JsonInputValidation(ctx)
 		return
 	}
+
 	res, err := c.Login(context.Background(), &pb.LoginRequest{
 		Username: user.Username,
 		Email:    user.Email,
 		Password: user.Password,
 	})
+	// extracting the error message from the GRPC error
+	errs, _ := utils.ExtractError(err)
 	if err != nil {
-		responses := utils.ErrorResponse("Failed to Login user", err.Error(), nil)
-		ctx.Writer.Header().Set("Content-Type", "application/json")
-		ctx.Writer.WriteHeader(http.StatusBadRequest)
-		utils.ResponseJSON(*ctx, responses)
-		return
+		ctx.JSON(http.StatusNotFound, gin.H{
+			"Success": false,
+			"Message": "Login credentilas failed",
+			"err":     errs,
+		})
+	} else {
+		ctx.JSON(http.StatusOK, gin.H{
+			"Success": true,
+			"Message": "User Successfully logged in",
+			"data":    res,
+		})
 	}
-	responses := utils.SuccessResponse(true, "SUCCESS", res)
-	ctx.Writer.Header().Set("Content-Type", "application/json")
-	ctx.Writer.WriteHeader(http.StatusOK)
-	utils.ResponseJSON(*ctx, responses)
-	return
+
 }
