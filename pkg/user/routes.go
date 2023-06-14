@@ -3,7 +3,7 @@ package profile
 import (
 	"github.com/apiGateway/pkg/auth"
 	"github.com/apiGateway/pkg/config"
-	"github.com/apiGateway/pkg/profile/routes"
+	"github.com/apiGateway/pkg/user/routes"
 	"github.com/gin-gonic/gin"
 )
 

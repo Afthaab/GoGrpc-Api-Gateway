@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/apiGateway/pkg/domain"
-	"github.com/apiGateway/pkg/profile/pb"
+	"github.com/apiGateway/pkg/user/pb"
 	"github.com/apiGateway/pkg/utils"
 	"github.com/gin-gonic/gin"
 )

@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/apiGateway/pkg/config"
-	"github.com/apiGateway/pkg/profile/pb"
+	"github.com/apiGateway/pkg/user/pb"
 	"google.golang.org/grpc"
 )
 
