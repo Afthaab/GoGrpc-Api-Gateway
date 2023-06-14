@@ -17,6 +17,7 @@ message RegisterRequest {
     string username = 1;
     string email = 2;
     string password = 3;
+    string phone = 4;
   }
   
   message RegisterResponse {
@@ -63,4 +64,4 @@ message ValidateResponse{
 }
 
 // export PATH="$PATH:$(go env GOPATH)/bin"
-// protoc --go_out=. --go-grpc_out=. pkg/pb/auth.proto
+// protoc --go_out=. --go-grpc_out=. pkg/auth/pb/auth.proto

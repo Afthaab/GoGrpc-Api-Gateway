@@ -25,6 +25,7 @@ func Register(ctx *gin.Context, p pb.AuthServiceClient) {
 		Username: body.Username,
 		Email:    body.Email,
 		Password: body.Password,
+		Phone:    body.Phone,
 	})
 
 	// extracting the error message from the GRPC error
