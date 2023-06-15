@@ -3,7 +3,6 @@ package utils
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -59,7 +58,6 @@ func ExtractError(err error) (string, error) {
 }
 
 func JsonInputValidation(ctx *gin.Context) {
-	fmt.Println("---------------------------------------------------------")
 	ctx.JSON(http.StatusBadRequest, gin.H{
 		"Success": false,
 		"Message": "client-side input validation failed",
