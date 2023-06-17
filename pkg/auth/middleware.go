@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/apiGateway/pkg/auth/pb"
+	"github.com/apiGateway/pkg/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -35,9 +36,12 @@ func (c *AuthMiddlewareConfig) AuthRequired(ctx *gin.Context) {
 	res, err := c.svc.client.Validate(context.Background(), &pb.ValidateRequest{
 		Accesstoken: token[1],
 	})
+	// extracting the error message from the GRPC error
+	errs, _ := utils.ExtractError(err)
+
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"Error": err.Error(),
+			"Error": errs,
 		})
 	}
 

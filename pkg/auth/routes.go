@@ -17,12 +17,14 @@ func RegisterRoutes(r *gin.Engine, cfg *config.Config) *ServiceAuth {
 		user.POST("/login", svc.Login)
 		user.POST("/forget/password", svc.ForgotPassword)
 		user.POST("/forget/password/validate", svc.RegitserValidate)
+		user.POST("/forget/password/validate/newpassword", svc.ChangePassword)
 	}
 	admin := r.Group("/admin")
 	{
 		admin.POST("/login", svc.AdminLogin)
 		admin.POST("/forget/password", svc.ForgotPassword)
 		admin.POST("/forget/password/validate", svc.RegitserValidate)
+		admin.POST("/forget/password/validate/newpassword", svc.ChangePassword)
 	}
 
 	return svc
@@ -47,4 +49,8 @@ func (svc *ServiceAuth) AdminLogin(ctx *gin.Context) {
 
 func (svc *ServiceAuth) ForgotPassword(ctx *gin.Context) {
 	routes.ForgotPassword(ctx, svc.client)
+}
+
+func (svc *ServiceAuth) ChangePassword(ctx *gin.Context) {
+	routes.ChangePassword(ctx, svc.client)
 }
