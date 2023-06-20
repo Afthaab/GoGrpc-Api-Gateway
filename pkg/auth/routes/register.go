@@ -30,7 +30,8 @@ func Register(ctx *gin.Context, p pb.AuthServiceClient) {
 
 	// extracting the error message from the GRPC error
 	errs, _ := utils.ExtractError(err)
-
+	fmt.Println(errs)
+	fmt.Println(err)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{
 			"Success": false,

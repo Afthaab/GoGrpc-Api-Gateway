@@ -19,6 +19,8 @@ message ViewProfileResponse{
     string phone = 4;
     string profile = 5 ;  
     string error = 6;
+    string gender = 7;
+    string dob = 8;
 }
 
 // export PATH="$PATH:$(go env GOPATH)/bin"
