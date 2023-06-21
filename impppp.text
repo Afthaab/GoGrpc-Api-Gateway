@@ -27,3 +27,6 @@
 
     # Set the default command to run when starting the container
     CMD ["./app"]
+
+    ssh -i "microkey.pem" ubuntu@ec2-65-2-169-235.ap-south-1.compute.amazonaws.com
+Welcome to Ubuntu 22.04.2 LTS (GNU/Linux 5.19.0-1025-aws x86_64)

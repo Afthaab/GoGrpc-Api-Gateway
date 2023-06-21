@@ -41,10 +41,10 @@ func SuccessResponse(status bool, message string, data interface{}) Response {
 }
 
 func ResponseJSON(c gin.Context, data interface{}) {
-
 	c.Writer.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(c.Writer).Encode(data)
 }
+
 func ExtractError(err error) (string, error) {
 	// Check if the error is a gRPC error
 	if errStatus, ok := status.FromError(err); ok {
