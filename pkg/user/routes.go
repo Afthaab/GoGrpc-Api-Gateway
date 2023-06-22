@@ -20,6 +20,8 @@ func RegisterProileRoutes(r *gin.Engine, cfg *config.Config, authSvc *auth.Servi
 	user.PATCH("/profile/change/password", authorize.AuthRequired, svc.ChangePassword)
 
 	user.POST("/address/add", authorize.AuthRequired, svc.AddAdress)
+	user.GET("/address/view", authorize.AuthRequired, svc.ViewAddress)
+	user.PUT("/address/edit", authorize.AuthRequired, svc.EditAddress)
 
 }
 
@@ -36,4 +38,12 @@ func (svc *ProfileService) ChangePassword(ctx *gin.Context) {
 
 func (svc *ProfileService) AddAdress(ctx *gin.Context) {
 	routes.AddAdress(ctx, svc.client)
+}
+
+func (svc *ProfileService) ViewAddress(ctx *gin.Context) {
+	routes.ViewAddress(ctx, svc.client)
+}
+
+func (svc *ProfileService) EditAddress(ctx *gin.Context) {
+	routes.EditAddress(ctx, svc.client)
 }
