@@ -7,9 +7,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RegisterProileRoutes(r *gin.Engine, cfg *config.Config, authSvc *auth.ServiceAuth) {
-	svc := &ProfileService{
-		client: InitProfileService(cfg),
+func RegisterUserRoutes(r *gin.Engine, cfg *config.Config, authSvc *auth.ServiceAuth) {
+	svc := &UserService{
+		client: InitUserService(cfg),
 	}
 	authorize := auth.InitAuthMiddleware(authSvc)
 
@@ -25,25 +25,25 @@ func RegisterProileRoutes(r *gin.Engine, cfg *config.Config, authSvc *auth.Servi
 
 }
 
-func (svc *ProfileService) ViewProfile(ctx *gin.Context) {
+func (svc *UserService) ViewProfile(ctx *gin.Context) {
 	routes.ViewProfile(ctx, svc.client)
 }
 
-func (svc *ProfileService) EditProfile(ctx *gin.Context) {
+func (svc *UserService) EditProfile(ctx *gin.Context) {
 	routes.EditProfile(ctx, svc.client)
 }
-func (svc *ProfileService) ChangePassword(ctx *gin.Context) {
+func (svc *UserService) ChangePassword(ctx *gin.Context) {
 	routes.ChangePassword(ctx, svc.client)
 }
 
-func (svc *ProfileService) AddAdress(ctx *gin.Context) {
+func (svc *UserService) AddAdress(ctx *gin.Context) {
 	routes.AddAdress(ctx, svc.client)
 }
 
-func (svc *ProfileService) ViewAddress(ctx *gin.Context) {
+func (svc *UserService) ViewAddress(ctx *gin.Context) {
 	routes.ViewAddress(ctx, svc.client)
 }
 
-func (svc *ProfileService) EditAddress(ctx *gin.Context) {
+func (svc *UserService) EditAddress(ctx *gin.Context) {
 	routes.EditAddress(ctx, svc.client)
 }

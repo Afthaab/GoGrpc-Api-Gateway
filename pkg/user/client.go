@@ -8,12 +8,12 @@ import (
 	"google.golang.org/grpc"
 )
 
-type ProfileService struct {
+type UserService struct {
 	client pb.ProfileManagementClient
 }
 
-func InitProfileService(cfg *config.Config) pb.ProfileManagementClient {
-	grpcConn, err := grpc.Dial(cfg.Profilesvcurl, grpc.WithInsecure())
+func InitUserService(cfg *config.Config) pb.ProfileManagementClient {
+	grpcConn, err := grpc.Dial(cfg.Usersvcurl, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalln("Could not connect to the GRPC Server")
 	}
