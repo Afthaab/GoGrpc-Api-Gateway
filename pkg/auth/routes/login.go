@@ -28,15 +28,15 @@ func Login(ctx *gin.Context, c pb.AuthServiceClient) {
 	errs, _ := utils.ExtractError(err)
 
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{
+		ctx.JSON(http.StatusUnauthorized, gin.H{
 			"Success": false,
-			"Message": "Login credentilas failed",
+			"Message": "Login credentials failed",
 			"err":     errs,
 		})
 	} else {
 		ctx.JSON(http.StatusOK, gin.H{
 			"Success": true,
-			"Message": "User Successfully logged in",
+			"Message": "User successfully logged in",
 			"data":    res,
 		})
 	}
@@ -61,7 +61,7 @@ func AdminLogin(ctx *gin.Context, c pb.AuthServiceClient) {
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{
 			"Success": false,
-			"Message": "Admin Login failed",
+			"Message": "Admin login failed",
 			"err":     errs,
 		})
 	} else {
@@ -89,7 +89,7 @@ func ForgotPassword(ctx *gin.Context, c pb.AuthServiceClient) {
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{
 			"Success": false,
-			"Message": "Forgot Password Failed",
+			"Message": "Forgot Password failed",
 			"err":     errs,
 		})
 	} else {
@@ -105,10 +105,11 @@ func ChangePassword(ctx *gin.Context, c pb.AuthServiceClient) {
 	user := domain.User{}
 	err := ctx.Bind(&user)
 	if err != nil {
-
+		utils.JsonInputValidation(ctx)
+		return
 	}
 	res, err := c.ChangePassword(context.Background(), &pb.ChangePasswordRequest{
-		Id:       user.Id,
+		Email:    user.Email,
 		Password: user.Password,
 	}) // extracting the error message from the GRPC error
 	errs, _ := utils.ExtractError(err)

@@ -7,43 +7,54 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RegisterProileRoutes(r *gin.Engine, cfg *config.Config, authSvc *auth.ServiceAuth) {
-	svc := &ProfileService{
-		client: InitProfileService(cfg),
+func RegisterUserRoutes(r *gin.Engine, cfg *config.Config, authSvc *auth.ServiceAuth) {
+	svc := &UserService{
+		client: InitUserService(cfg),
 	}
 	authorize := auth.InitAuthMiddleware(authSvc)
 
 	user := r.Group("/user")
-
-	user.GET("/profile", authorize.AuthRequired, svc.ViewProfile)
-	user.PUT("/profile/edit", authorize.AuthRequired, svc.EditProfile)
-	user.PATCH("/profile/change/password", authorize.AuthRequired, svc.ChangePassword)
-
-	user.POST("/address/add", authorize.AuthRequired, svc.AddAdress)
-	user.GET("/address/view", authorize.AuthRequired, svc.ViewAddress)
-	user.PUT("/address/edit", authorize.AuthRequired, svc.EditAddress)
+	{
+		profile := user.Group("/profile")
+		{
+			profile.GET("/view", authorize.AuthRequired, svc.ViewProfile)
+			profile.PUT("/edit", authorize.AuthRequired, svc.EditProfile)
+			profile.PATCH("/change/password", authorize.AuthRequired, svc.ChangePassword)
+		}
+		address := user.Group("/address")
+		{
+			address.POST("/add", authorize.AuthRequired, svc.AddAdress)
+			address.GET("/view", authorize.AuthRequired, svc.ViewAddressById)
+			address.GET("/view/all", authorize.AuthRequired, svc.ViewAddress)
+			address.PUT("/edit", authorize.AuthRequired, svc.EditAddress)
+		}
+	}
 
 }
 
-func (svc *ProfileService) ViewProfile(ctx *gin.Context) {
+func (svc *UserService) ViewProfile(ctx *gin.Context) {
 	routes.ViewProfile(ctx, svc.client)
 }
 
-func (svc *ProfileService) EditProfile(ctx *gin.Context) {
+func (svc *UserService) EditProfile(ctx *gin.Context) {
 	routes.EditProfile(ctx, svc.client)
 }
-func (svc *ProfileService) ChangePassword(ctx *gin.Context) {
+func (svc *UserService) ChangePassword(ctx *gin.Context) {
 	routes.ChangePassword(ctx, svc.client)
 }
 
-func (svc *ProfileService) AddAdress(ctx *gin.Context) {
+func (svc *UserService) AddAdress(ctx *gin.Context) {
 	routes.AddAdress(ctx, svc.client)
 }
 
-func (svc *ProfileService) ViewAddress(ctx *gin.Context) {
+func (svc *UserService) ViewAddress(ctx *gin.Context) {
 	routes.ViewAddress(ctx, svc.client)
 }
 
-func (svc *ProfileService) EditAddress(ctx *gin.Context) {
+func (svc *UserService) EditAddress(ctx *gin.Context) {
 	routes.EditAddress(ctx, svc.client)
+}
+
+func (svc *UserService) ViewAddressById(ctx *gin.Context) {
+	routes.ViewAddressById(ctx, svc.client)
 }

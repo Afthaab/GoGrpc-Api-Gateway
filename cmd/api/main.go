@@ -6,6 +6,7 @@ import (
 
 	"github.com/apiGateway/pkg/auth"
 	"github.com/apiGateway/pkg/config"
+	products "github.com/apiGateway/pkg/products"
 	user "github.com/apiGateway/pkg/user"
 	"github.com/gin-gonic/gin"
 )
@@ -18,7 +19,8 @@ func main() {
 	r := gin.Default()
 
 	authsvc := *auth.RegisterRoutes(r, &cfg)
-	user.RegisterProileRoutes(r, &cfg, &authsvc)
+	user.RegisterUserRoutes(r, &cfg, &authsvc)
+	products.RegisterProductRoutes(r, &cfg, &authsvc)
 
 	fmt.Println(authsvc)
 	r.Run(cfg.Port)

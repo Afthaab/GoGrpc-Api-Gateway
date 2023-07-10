@@ -97,13 +97,13 @@ func ChangePassword(ctx *gin.Context, c pb.ProfileManagementClient) {
 		errs, _ := utils.ExtractError(err)
 		ctx.JSON(int(res.Status), gin.H{
 			"Success": false,
-			"Message": "Edit Profile Failed",
+			"Message": "Change Password Failed",
 			"err":     errs,
 		})
 	} else {
 		ctx.JSON(int(res.Status), gin.H{
 			"Success": true,
-			"Message": "Edit Profile Failed",
+			"Message": "Change Password Passed",
 			"data":    res,
 		})
 	}
