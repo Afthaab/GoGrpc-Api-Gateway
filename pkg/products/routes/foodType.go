@@ -10,48 +10,48 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AddSize(ctx *gin.Context, c pb.ProductManagementClient) {
-	sizeData := domain.Size{}
-	err := ctx.Bind(&sizeData)
+func AddFoodType(ctx *gin.Context, c pb.ProductManagementClient) {
+	typeData := domain.Foodtype{}
+	err := ctx.Bind(&typeData)
 	if err != nil {
 		utils.JsonInputValidation(ctx)
 		return
 	}
-	res, err := c.AddSizeBazedPrize(context.Background(), &pb.AddSizeBazedPrizeRequest{
-		Name:       sizeData.Name,
-		Pricerange: sizeData.Price,
+	res, err := c.AddFoodType(context.Background(), &pb.AddFoodTypeRequest{
+		Name:     typeData.Foodtype,
+		Imageurl: typeData.Imageurl,
 	})
 	if err != nil {
 		// extracting the error message from the GRPC error
 		errs, _ := utils.ExtractError(err)
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"Success": false,
-			"Message": "Adding new size failed",
+			"Message": "Adding new Food Type failed",
 			"err":     errs,
 		})
 	} else {
 		ctx.JSON(http.StatusOK, gin.H{
 			"Success": true,
-			"Message": "Adding new size Successfull",
+			"Message": "Adding new Food Type Successfull",
 			"data":    res,
 		})
 	}
 }
 
-func ViewSize(ctx *gin.Context, c pb.ProductManagementClient) {
-	res, err := c.ViewSizeBasedPrize(context.Background(), &pb.ViewSizeBasedPriceRequest{})
+func ViewFoodType(ctx *gin.Context, c pb.ProductManagementClient) {
+	res, err := c.ViewFoodType(context.Background(), &pb.ViewFoodtypeRequest{})
 	if err != nil {
 		// extracting the error message from the GRPC error
 		errs, _ := utils.ExtractError(err)
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"Success": false,
-			"Message": "View Size Based Prices Failed",
+			"Message": "Viewing Food Type failed",
 			"err":     errs,
 		})
 	} else {
 		ctx.JSON(http.StatusOK, gin.H{
 			"Success": true,
-			"Message": "Successfully viewed Size Based Prices",
+			"Message": "Viewing Food Type Successfull",
 			"data":    res,
 		})
 	}
