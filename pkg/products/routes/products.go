@@ -85,3 +85,23 @@ func ViewProductById(ctx *gin.Context, c pb.ProductManagementClient) {
 		})
 	}
 }
+
+func DeleteProduct(ctx *gin.Context, c pb.ProductManagementClient) {
+	pid := ctx.Query("id")
+	res, err := c.DeleteProduct(context.Background(), &pb.DeleteProductRequest{
+		Productid: pid,
+	})
+	if err != nil {
+		// extracting the error message from the GRPC error
+		errs, _ := utils.ExtractError(err)
+
+		utils.FailureJson(ctx, http.StatusUnprocessableEntity, false, "Could not delete the product", errs)
+	} else {
+		ctx.JSON(http.StatusOK, gin.H{
+			"Success": true,
+			"Message": "Delete product successfull",
+			"data":    res,
+		})
+	}
+
+}
