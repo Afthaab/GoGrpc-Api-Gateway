@@ -74,11 +74,8 @@ func AddImage(ctx *gin.Context, c pb.ProductManagementClient) {
 	if err != nil {
 		// Extract the error message from the gRPC error
 		errs, _ := utils.ExtractError(err)
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"Success": false,
-			"Message": "Adding image failed",
-			"error":   errs,
-		})
+
+		utils.FailureJson(ctx, http.StatusBadRequest, false, "Adding image failed", errs)
 	} else {
 		ctx.JSON(http.StatusOK, gin.H{
 			"Success": true,
@@ -103,11 +100,8 @@ func AddCategory(ctx *gin.Context, c pb.ProductManagementClient) {
 	if err != nil {
 		// extracting the error message from the GRPC error
 		errs, _ := utils.ExtractError(err)
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"Success": false,
-			"Message": "Adding new Category failed",
-			"error":   errs,
-		})
+
+		utils.FailureJson(ctx, http.StatusBadRequest, false, "Adding new Category failed", errs)
 	} else {
 		ctx.JSON(http.StatusOK, gin.H{
 			"Success": true,
@@ -122,15 +116,77 @@ func ViewCategories(ctx *gin.Context, c pb.ProductManagementClient) {
 	if err != nil {
 		// extracting the error message from the GRPC error
 		errs, _ := utils.ExtractError(err)
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"Success": false,
-			"Message": "View Categories failed",
-			"err":     errs,
-		})
+
+		utils.FailureJson(ctx, http.StatusNotFound, false, "View Categories failed", errs)
 	} else {
 		ctx.JSON(http.StatusOK, gin.H{
 			"Success": true,
 			"Message": "View Categories Successfull",
+			"data":    res,
+		})
+	}
+}
+
+func ViewCategoryById(ctx *gin.Context, c pb.ProductManagementClient) {
+	cid := ctx.Query("id")
+	res, err := c.ViewCategoryById(context.Background(), &pb.ViewCategoryByIdRequest{
+		Categoryid: cid,
+	})
+	if err != nil {
+		// extracting the error message from the GRPC error
+		errs, _ := utils.ExtractError(err)
+
+		utils.FailureJson(ctx, http.StatusNotFound, false, "View Category by id failed", errs)
+
+	} else {
+		ctx.JSON(http.StatusOK, gin.H{
+			"Success": true,
+			"Message": "View Category by id Successfull",
+			"data":    res,
+		})
+	}
+}
+
+func EditCategory(ctx *gin.Context, c pb.ProductManagementClient) {
+	categoryData := domain.Category{}
+	err := ctx.Bind(&categoryData)
+	if err != nil {
+		utils.JsonInputValidation(ctx)
+		return
+	}
+	res, err := c.EditCategory(context.Background(), &pb.EditCategoryRequest{
+		Categoryid:   categoryData.Id,
+		Categoryname: categoryData.Categoryname,
+		Imageurl:     categoryData.Imageurl,
+	})
+	if err != nil {
+		// extracting the error message from the GRPC error
+		errs, _ := utils.ExtractError(err)
+
+		utils.FailureJson(ctx, http.StatusNotFound, false, "Edit category failed", errs)
+	} else {
+		ctx.JSON(http.StatusOK, gin.H{
+			"Success": true,
+			"Message": "Edit category successfull",
+			"data":    res,
+		})
+	}
+}
+
+func DeleteCategory(ctx *gin.Context, c pb.ProductManagementClient) {
+	sid := ctx.Query("id")
+	res, err := c.DeleteCategory(context.Background(), &pb.DeleteCategoryRequets{
+		Categoryid: sid,
+	})
+	if err != nil {
+		// extracting the error message from the GRPC error
+		errs, _ := utils.ExtractError(err)
+
+		utils.FailureJson(ctx, http.StatusUnprocessableEntity, false, "Could not delete the category", errs)
+	} else {
+		ctx.JSON(http.StatusNotFound, gin.H{
+			"Success": true,
+			"Message": "Delete category successfull",
 			"data":    res,
 		})
 	}
