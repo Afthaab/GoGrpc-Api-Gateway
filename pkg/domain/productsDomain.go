@@ -23,8 +23,20 @@ type Products struct {
 	Sizeid       []string ` json:"sizeid"`
 	Imageurls    []string ` json:"imageurls"`
 }
+
 type Foodtype struct {
 	Id       string `json:"id"`
 	Foodtype string `json:"foodtype"`
 	Imageurl string `json:"imageurl"`
+}
+
+type CartProduct struct {
+	Id          uint    `json:"id"`
+	Pid         string  ` json:"Pid"`
+	Uid         string  ` json:"uid"`
+	Productname string  ` json:"productname"`
+	Sizename    string  ` json:"sizename"`
+	Price       float32 ` json:"price"`
+	Imageurls   string  ` json:"imageurl"`
+	Quantity    int64   `json:"quantity"`
 }

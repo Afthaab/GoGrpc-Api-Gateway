@@ -8,7 +8,8 @@ type Config struct {
 	Port          string `mapstructure:"PORT"`
 	Authsvcurl    string `mapstructure:"AUTHSVCURL"`
 	Usersvcurl    string `mapstructure:"USERSVCURL"`
-	Productsvcurl string `mapstructure:"productsvcurl"`
+	Productsvcurl string `mapstructure:"PRODUCTSVCURL"`
+	Ordersvcurl   string `mapstructure:"ORDERSVCURL"`
 }
 
 func LoadConfig() (Config, error) {
