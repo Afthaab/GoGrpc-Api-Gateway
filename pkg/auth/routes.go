@@ -15,6 +15,12 @@ func RegisterRoutes(r *gin.Engine, cfg *config.Config) *ServiceAuth {
 		user.POST("/register", svc.Register)
 		user.POST("/register/validate", svc.RegitserValidate)
 		user.POST("/login", svc.Login)
+		forget := user.Group("forget")
+		{
+			forget.POST("/forget/password", svc.ForgotPassword)
+			forget.POST("/forget/password/validate", svc.RegitserValidate)
+			forget.POST("/forget/password/validate/newpassword", svc.ChangePassword)
+		}
 		user.POST("/forget/password", svc.ForgotPassword)
 		user.POST("/forget/password/validate", svc.RegitserValidate)
 		user.POST("/forget/password/validate/newpassword", svc.ChangePassword)
