@@ -184,7 +184,7 @@ func DeleteCategory(ctx *gin.Context, c pb.ProductManagementClient) {
 
 		utils.FailureJson(ctx, http.StatusUnprocessableEntity, false, "Could not delete the category", errs)
 	} else {
-		ctx.JSON(http.StatusNotFound, gin.H{
+		ctx.JSON(http.StatusOK, gin.H{
 			"Success": true,
 			"Message": "Delete category successfull",
 			"data":    res,

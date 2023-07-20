@@ -33,6 +33,7 @@ func RegisterProductRoutes(r *gin.Engine, cfg *config.Config, authSvc *auth.Serv
 		product.POST("/add", authorize.AuthRequired, svc.AddProducts)
 		product.GET("/view", authorize.AuthRequired, svc.ViewProducts)
 		product.GET("/view/id", authorize.AuthRequired, svc.ViewProductById)
+		product.DELETE("/delete", authorize.AuthRequired, svc.DeleteProduct)
 	}
 	foodtype := r.Group("/food/type")
 	{
@@ -113,4 +114,8 @@ func (svc *ProdcutService) DeleteCategory(ctx *gin.Context) {
 
 func (svc *ProdcutService) DeleteFoodType(ctx *gin.Context) {
 	routes.DeleteFoodType(ctx, svc.client)
+}
+
+func (svc *ProdcutService) DeleteProduct(ctx *gin.Context) {
+	routes.DeleteProduct(ctx, svc.client)
 }
