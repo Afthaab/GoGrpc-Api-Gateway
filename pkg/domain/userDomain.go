@@ -9,6 +9,7 @@ type User struct {
 	Otp         string `json:"Otp"`
 	Gender      string `json:"gender"`
 	Dateofbirth string `json:"dateofbirth"`
+	Isblocked   bool   `json:"isblocked"`
 }
 
 type Password struct {

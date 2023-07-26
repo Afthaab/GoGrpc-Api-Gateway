@@ -29,6 +29,14 @@ func RegisterUserRoutes(r *gin.Engine, cfg *config.Config, authSvc *auth.Service
 			address.PUT("/edit", authorize.AuthRequired, svc.EditAddress)
 		}
 	}
+	admin := r.Group("/admin")
+	{
+		user := admin.Group("/user")
+		{
+			user.GET("/view/all", authorize.AuthRequired, svc.ViewAllUsers)
+			user.PATCH("/block", authorize.AuthRequired, svc.UserBlockUnblock)
+		}
+	}
 
 }
 
@@ -57,4 +65,10 @@ func (svc *UserService) EditAddress(ctx *gin.Context) {
 
 func (svc *UserService) ViewAddressById(ctx *gin.Context) {
 	routes.ViewAddressById(ctx, svc.client)
+}
+func (svc *UserService) ViewAllUsers(ctx *gin.Context) {
+	routes.ViewAllUsers(ctx, svc.client)
+}
+func (svc *UserService) UserBlockUnblock(ctx *gin.Context) {
+	routes.UserBlockUnblock(ctx, svc.client)
 }
